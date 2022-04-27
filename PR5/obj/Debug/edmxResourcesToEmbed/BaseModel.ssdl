@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище PR5_BaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="class">
+    <Key>
+      <PropertyRef Name="class_id" />
+    </Key>
+    <Property Name="class_id" Type="int" Nullable="false" />
+    <Property Name="classroom_ids" Type="int" />
+    <Property Name="student_ids" Type="int" />
+    <Property Name="year_study" Type="int" />
+    <Property Name="name_class" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="classroom">
+    <Key>
+      <PropertyRef Name="classroom_id" />
+    </Key>
+    <Property Name="classroom_id" Type="int" Nullable="false" />
+    <Property Name="name_class" Type="nvarchar" MaxLength="50" />
+    <Property Name="count_seats" Type="int" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="student_id" />
+    </Key>
+    <Property Name="student_id" Type="int" Nullable="false" />
+    <Property Name="first_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="last_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="date_of_birth" Type="date" />
+    <Property Name="adress" Type="nvarchar" MaxLength="50" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_class_classroom">
+    <End Role="classroom" Type="Self.classroom" Multiplicity="0..1" />
+    <End Role="class" Type="Self.class" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="classroom">
+        <PropertyRef Name="classroom_id" />
+      </Principal>
+      <Dependent Role="class">
+        <PropertyRef Name="classroom_ids" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_class_student">
+    <End Role="student" Type="Self.student" Multiplicity="0..1" />
+    <End Role="class" Type="Self.class" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="student_id" />
+      </Principal>
+      <Dependent Role="class">
+        <PropertyRef Name="student_ids" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище PR5_BaseModelContainer">
+    <EntitySet Name="class" EntityType="Self.class" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="classroom" EntityType="Self.classroom" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="student" EntityType="Self.student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_class_classroom" Association="Self.FK_class_classroom">
+      <End Role="classroom" EntitySet="classroom" />
+      <End Role="class" EntitySet="class" />
+    </AssociationSet>
+    <AssociationSet Name="FK_class_student" Association="Self.FK_class_student">
+      <End Role="student" EntitySet="student" />
+      <End Role="class" EntitySet="class" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
